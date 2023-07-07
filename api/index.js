@@ -37,12 +37,15 @@ app.use(logger('tiny'));
 
 app.all('/', async (req, res) => {
       try {
-            let url = decodeURIComponent(req.query.url);
-                url = url.replace(/$|,/g, match => match == '$' ? '?' : '&');
-
+            let url = req.query.url;
             const body = await getBody(req);
 
             if (!url) throw Error('Missing target url.');
+
+            url = decodeURIComponent(url);
+            url = url.replace(/$|,/g, match => match == '$' ? '?' : '&');
+
+            console.log('ini url: ', url)
             
             // forward request
             const rez = await fetcher(url, {
