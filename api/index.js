@@ -38,6 +38,7 @@ app.use(logger('tiny'));
 app.all('/', async (req, res) => {
       try {
             const url = req.query.url;
+            console.log('debug: ', url);
             const body = await getBody(req);
 
             if (!url) throw Error('Missing target url.');
