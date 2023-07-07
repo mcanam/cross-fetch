@@ -37,8 +37,9 @@ app.use(logger('tiny'));
 
 app.all('/', async (req, res) => {
       try {
-            const url = req.query.url;
-            console.log('debug: ', url);
+            let url = decodeURIComponent(req.query.url);
+                url = url.replace(/$|,/g, match => match == '$' ? '?' : '&');
+
             const body = await getBody(req);
 
             if (!url) throw Error('Missing target url.');
