@@ -43,7 +43,7 @@ app.all('/', async (req, res) => {
             if (!url) throw Error('Missing target url.');
 
             url = decodeURIComponent(url);
-            url = url.replace(/[$|,]/g, match => match == '$' ? '?' : '&');
+            url = url.replace(/[$|*]/g, match => match == '$' ? '?' : '&');
 
             console.log('ini url: ', url)
             
