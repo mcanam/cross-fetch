@@ -2,10 +2,10 @@
     "name": "crossfetch",
     "version": "1.0.0",
     "description": "",
-    "main": "start.js",
+    "main": "index.js",
     "scripts": {
-        "start": "node start.js",
-        "start:dev": "nodemon start.js"
+        "start": "node index.js",
+        "start:dev": "nodemon index.js"
     },
     "author": "mcanam",
     "license": "MIT",

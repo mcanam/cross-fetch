@@ -1,5 +1,5 @@
 const express = require('express');
-const logger  = require('morgan');
+const logger = require('morgan');
 const limiter = require('express-rate-limit');
 
 ////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@ const setHeaders = (req, res, next) => {
       res.removeHeader('x-powered-by');
       res.removeHeader('date');
       res.removeHeader('connection');
-      
+
       // important headers
       res.setHeader('access-control-allow-origin', '*');
       res.setHeader('access-control-expose-headers', '*');
@@ -40,26 +40,22 @@ app.all('/', async (req, res) => {
             let url = req.query.url;
             const body = await getBody(req);
 
-            if (!url) throw Error('Missing target url.');
-
+            if (!url) throw Error('Missing target url.')
             url = decodeURIComponent(url);
-            url = url.replace(/[$|*]/g, match => match == '$' ? '?' : '&');
 
-            console.log('ini url: ', url)
-            
             // forward request
             const rez = await fetcher(url, {
                   method: req.method,
                   headers: req.headers,
                   body: body
             });
-            
+
             // use .write() instead of .send() method
             res.writeHead(rez.statusCode, rez.headers);
             res.write(rez.body, 'binary');
             res.end();
-      } 
-      
+      }
+
       catch (error) {
             console.log(error);
             res.status(500).send(error.message);
@@ -74,10 +70,10 @@ async function fetcher(url, options) {
       if ('host' in options.headers) {
             delete options.headers.host;
       }
-      
+
       try {
             let res = await request(url, options);
-            
+
             // follow redirect
             if (REDIRECT_CODES.includes(res.statusCode)) {
                   url = res.headers.location;
@@ -86,8 +82,8 @@ async function fetcher(url, options) {
 
             res.url = url;
             return Promise.resolve(res);
-      } 
-      
+      }
+
       catch (error) {
             return Promise.reject(error);
       }
