@@ -12,9 +12,15 @@ const setHeaders = (req, res, next) => {
       res.removeHeader('date');
       res.removeHeader('connection');
 
-      // important headers
+      // important CORS headers
       res.setHeader('access-control-allow-origin', '*');
+      res.setHeader('access-control-allow-methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      res.setHeader('access-control-allow-headers', '*');
       res.setHeader('access-control-expose-headers', '*');
+
+      if (req.method === 'OPTIONS') {
+            return res.status(204).end();
+      }
 
       next();
 };
@@ -67,9 +73,10 @@ app.all('/', async (req, res) => {
 async function fetcher(url, options) {
       const REDIRECT_CODES = [301, 302, 303, 307, 308];
 
-      if ('host' in options.headers) {
-            delete options.headers.host;
-      }
+      // Delete headers yang bikin error atau ditolak YouTube
+      delete options.headers['host'];
+      delete options.headers['origin'];
+      delete options.headers['referer'];
 
       try {
             let res = await request(url, options);
