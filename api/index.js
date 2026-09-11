@@ -73,7 +73,6 @@ app.all('/', async (req, res) => {
 async function fetcher(url, options) {
       const REDIRECT_CODES = [301, 302, 303, 307, 308];
 
-      // Delete headers yang bikin error atau ditolak YouTube
       delete options.headers['host'];
       delete options.headers['origin'];
       delete options.headers['referer'];
